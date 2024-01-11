@@ -1,0 +1,89 @@
+import { Button, VerticalBox , LineEdit} from "std-widgets.slint";
+
+export component AppWindow inherits Window {
+    in property <string> results: "";
+    in-out property <bool> opencurtain;
+    callback divide-income(string);
+
+    title: "Income Calculator";
+
+    background: #313e50;
+    GridLayout {
+        padding: 50px;
+        spacing: 25px;
+        Row {
+            Text {
+                text: "Enter total income";
+                horizontal-alignment: center;
+                font-size: 24px;
+                font-weight: 900;
+                color: white;
+            }
+        }
+
+        Row {
+            income := LineEdit {
+                horizontal-alignment: center;
+                font-size: 16px;
+                placeholder-text: "Enter your number";
+                height: 35px;
+                text: 100;
+                input-type: number;
+            }
+        }
+
+        Row {
+            Button {
+                text: "Calculate";
+                primary: true;
+                height: 35px;
+                clicked => {
+                    root.opencurtain = !root.opencurtain;
+                    divide-income(income.text);
+                }
+            }
+        }
+
+        Row {
+            VerticalBox {
+                Rectangle {
+                    height: 100px;
+                    background: #f2f2f2;
+                    Text {
+                        color: black;
+                        font-size: 16px;
+                        font-weight: 500;
+                        text: root.results;
+                    }
+
+                    // Left rectangle
+                    Rectangle {
+                        background: #333333;
+                        x: 0;
+                        width: opencurtain ? 0px : parent.width / 2;
+                        height: parent.height;
+                        animate width {
+                            duration: 250ms; easing: ease-in;
+                        }
+                    }
+
+                    // Right rectangle
+                    Rectangle {
+                        background: #333333;
+                        x: opencurtain ? parent.width : parent.width / 2;
+                        width: opencurtain ? 0px : parent.width / 2;
+                        height: parent.height;
+                        animate width {
+                            duration: 250ms; easing: ease-in;
+                        }
+                        animate x {
+                            duration: 250ms; easing: ease-in;
+                        }
+                    }
+                }
+
+
+            }
+        }
+    }
+}
