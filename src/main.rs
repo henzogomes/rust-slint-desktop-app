@@ -13,7 +13,12 @@ fn main() -> Result<(), slint::PlatformError> {
     ui.on_divide_income(move |string| {
         let ui = ui_handle.unwrap();
 
-        let num: f64 = string.trim().parse().unwrap();
+        //let num: f64 = string.trim().parse().unwrap();
+
+        let num = match string.parse::<f64>() {
+            Ok(v) => v,
+            Err(_) => 0.0,
+        };
 
         let tax: f64 = num * TAXPER;
         let owner: f64 = num * OWNERPER;
